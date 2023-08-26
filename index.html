@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор Матриці Долі</title>
+</head>
+<body>
+  <h1>Калькулятор Матриці Долі</h1>
+  
+  <h2>Розрахунок за ім'ям</h2>
+  <button id="nameButton">Розрахувати за ім'ям</button>
+  <p id="nameResult"></p>
+  
+  <h2>Розрахунок за датою народження</h2>
+  <button id="dateButton">Розрахувати за датою народження</button>
+  <p id="dateResult"></p>
+  
+  <script>
+    // Вставьте сюда ваш JavaScript код
+
+    function calculateDestinyNumber(name) {
+      // Приводим имя к верхнему регистру и удаляем пробелы
+      name = name.toUpperCase().replace(/\s/g, '');
+
+      let sum = 0;
+
+      // Суммируем числа, соответствующие буквам в имени
+      for (let i = 0; i < name.length; i++) {
+        const charCode = name.charCodeAt(i) - 64; // A=1, B=2, и так далее
+        sum += charCode;
+      }
+
+      // Суммируем цифры полученной суммы до тех пор, пока не получим однозначное число
+      while (sum > 9) {
+        sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+      }
+
+      return sum;
+    }
+
+    function calculateMatrixOfDestiny(birthdate) {
+      // Преобразуем дату рождения в числовой формат ГГГГММДД
+      const dateNumbers = birthdate.split('-').join('');
+
+      // Суммируем цифры даты рождения
+      let sum = 0;
+      for (let i = 0; i < dateNumbers.length; i++) {
+        sum += parseInt(dateNumbers[i]);
+      }
+
+      // Суммируем цифры полученной суммы до тех пор, пока не получим однозначное число
+      while (sum > 9) {
+        sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+      }
+
+      return sum;
+    }
+
+    document.getElementById('nameButton').addEventListener('click', function() {
+      const name = prompt("Введіть Ваше ім'я (лише літери):");
+
+      if (name) {
+        const destinyNumber = calculateDestinyNumber(name);
+        document.getElementById('nameResult').textContent = `Ваше число долі по Матриці за іменем: ${destinyNumber}`;
+      } else {
+        alert("Будь ласка, введіть ім'я");
+      }
+    });
+
+    document.getElementById('dateButton').addEventListener('click', function() {
+      const birthdate = prompt("Введіть дату народження в форматі ГГГГ-ММ-ДД:");
+
+      if (birthdate) {
+        const destinyNumber = calculateMatrixOfDestiny(birthdate);
+        document.getElementById('dateResult').textContent = `Ваше число матриці долі за датою народження: ${destinyNumber}`;
+      } else {
+        alert("Будь ласка, введіть дату народження");
+      }
+    });
+  </script>
+</body>
+</html>
