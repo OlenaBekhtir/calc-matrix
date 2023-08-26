@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Калькулятор Матриці Долі</title>
+  <style>
+    h1 {
+      color: blue;
+    }
+  </style>
 </head>
 <body>
   <h1>Калькулятор Матриці Долі</h1>
@@ -17,21 +22,16 @@
   <p id="dateResult"></p>
   
   <script>
-    // Вставьте сюда ваш JavaScript код
-
     function calculateDestinyNumber(name) {
-      // Приводим имя к верхнему регистру и удаляем пробелы
       name = name.toUpperCase().replace(/\s/g, '');
 
       let sum = 0;
 
-      // Суммируем числа, соответствующие буквам в имени
       for (let i = 0; i < name.length; i++) {
-        const charCode = name.charCodeAt(i) - 64; // A=1, B=2, и так далее
+        const charCode = name.charCodeAt(i) - 64;
         sum += charCode;
       }
 
-      // Суммируем цифры полученной суммы до тех пор, пока не получим однозначное число
       while (sum > 9) {
         sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
       }
@@ -40,16 +40,31 @@
     }
 
     function calculateMatrixOfDestiny(birthdate) {
-      // Преобразуем дату рождения в числовой формат ГГГГММДД
-      const dateNumbers = birthdate.split('-').join('');
+      const dateParts = birthdate.split('-');
+      
+      if (dateParts.length !== 3) {
+        return null;
+      }
 
-      // Суммируем цифры даты рождения
+      const year = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]);
+      const day = parseInt(dateParts[2]);
+
+      if (isNaN(year) || isNaN(month) || isNaN(day)) {
+        return null;
+      }
+
+      if (month < 1 || month > 12 || day < 1 || day > 31) {
+        return null;
+      }
+
+      const dateNumbers = dateParts.join('');
+
       let sum = 0;
       for (let i = 0; i < dateNumbers.length; i++) {
         sum += parseInt(dateNumbers[i]);
       }
 
-      // Суммируем цифры полученной суммы до тех пор, пока не получим однозначное число
       while (sum > 9) {
         sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
       }
@@ -73,7 +88,11 @@
 
       if (birthdate) {
         const destinyNumber = calculateMatrixOfDestiny(birthdate);
-        document.getElementById('dateResult').textContent = `Ваше число матриці долі за датою народження: ${destinyNumber}`;
+        if (destinyNumber !== null) {
+          document.getElementById('dateResult').textContent = `Ваше число матриці долі за датою народження: ${destinyNumber}`;
+        } else {
+          alert("Некорректна дата народження");
+        }
       } else {
         alert("Будь ласка, введіть дату народження");
       }
